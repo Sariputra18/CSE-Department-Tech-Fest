@@ -7,7 +7,7 @@ const Model = ({ url }) => {
 
   useEffect(() => {
     if (scene) {
-      scene.position.set(-73, 0, 25);
+      scene.position.set(0, 0, 0);
       scene.scale.set(1, 1, 1);
     }
   }, [scene]);
@@ -24,7 +24,7 @@ const LoadingBox = () => (
 
 const ModelViewer = () => {
   const [error, setError] = useState(null);
-  const modelPath = '/models/room_g.glb';
+  const modelPath = '/models/isometric_bedroom.glb';
 
   const handleError = (err) => {
     console.error('Error loading model:', err);
@@ -66,10 +66,10 @@ const ModelViewer = () => {
             enableRotate={true}
             autoRotate={true}
             minDistance={2}
-            maxDistance={200}
+            maxDistance={5}
           />
 
-          <gridHelper args={[2000, 2000]} />
+          <gridHelper args={[20, 20]} />
         </Canvas>
       )}
       <div className="absolute bottom-4 left-4 text-sm text-gray-600 bg-white/80 px-2 py-1 rounded">
@@ -79,6 +79,6 @@ const ModelViewer = () => {
   );
 };
 
-useGLTF.preload('/models/room_g.glb');
+useGLTF.preload('/models/isometric_bedroom.glb');
 
 export default ModelViewer;
