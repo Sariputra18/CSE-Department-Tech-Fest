@@ -1,12 +1,22 @@
-import React, { Suspense, useState, useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
+import React, { Suspense, useState, useEffect, useRef } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useCursor, Text } from '@react-three/drei';
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 const Model = ({ url }) => {
   const { scene } = useGLTF(url);
   const [originalMaterial, setOriginalMaterial] = useState(null);
+  const [originalMaterialObject22, setOriginalMaterialObject22] = useState(null);
+  const [originalMaterialObject90, setOriginalMaterialObject90] = useState(null);
   const [objectPosition, setObjectPosition] = useState(null);
+  const [objectPositionObject22, setobjectPositionObject22] = useState(null);
+  const [objectPositionObject90, setobjectPositionObject90] = useState(null);
+
+  const { camera } = useThree();
+  const controlsRef = useRef();
+  const [isZoomedIn, setIsZoomedIn] = useState(false);
+
 
   useEffect(() => {
     if (scene) {
@@ -25,19 +35,78 @@ const Model = ({ url }) => {
         setObjectPosition(new THREE.Vector3(center.x, box.max.y + 0.2, center.z));
       }
 
+      const targetObj2 = scene.getObjectByName('Object_22');
+      if (targetObj2) {
+        // Compute bounding box for accurate height palcement
+        const box = new THREE.Box3().setFromObject(targetObj2);
+        const center = new THREE.Vector3();
+        const size = new THREE.Vector3();
+        box.getCenter(center);
+        box.getSize(size);
+
+        setobjectPositionObject22(new THREE.Vector3(center.x, box.max.y + 0.2, center.z));
+      }
+
+      const targetObj3 = scene.getObjectByName('Object_96');
+      if (targetObj3) {
+        // Compute bounding box for accurate height palcement
+        const box = new THREE.Box3().setFromObject(targetObj3);
+        const center = new THREE.Vector3();
+        const size = new THREE.Vector3();
+        box.getCenter(center);
+        box.getSize(size);
+
+        setobjectPositionObject90(new THREE.Vector3(center.x, box.max.y + 0.2, center.z));
+      }
+
     }
   }, [scene]);
 
   useCursor(!!originalMaterial); // Change cursor when hovering
+  useCursor(!!originalMaterialObject22); // Change cursor for Object_22 while hovering
+  useCursor(!!originalMaterialObject90); // Change cursor for Object_90 while hovering
 
   const handlePointerOver = (e) => {
+    console.log(e.object.name);
     if (e.object.name === "Object_16") {
       e.stopPropagation();
       if (!originalMaterial) {
-        setOriginalMaterial(e.object.material); // Store original material
+        setOriginalMaterial(e.object.material);
+        // Create a clone of the original material and add emission
+        const newMaterial = e.object.material.clone();
+        newMaterial.emissive = new THREE.Color('white');
+        newMaterial.emissiveIntensity = 1; // Adjust this value to control outline brightness
+        e.object.material = newMaterial;
       }
-      e.object.material = new THREE.MeshStandardMaterial({ color: "cyan" }); // Change color
+      //e.object.material = new THREE.MeshStandardMaterial({ color: "cyan" }); // Change color
     }
+
+    if (e.object.name === "Object_22") {
+      e.stopPropagation();
+      if (!originalMaterialObject22) {
+        setOriginalMaterialObject22(e.object.material);
+        // Create a clone of the original material and add emission
+        const newMaterial = e.object.material.clone();
+        newMaterial.emissive = new THREE.Color('white');
+        newMaterial.emissiveIntensity = 1; // Adjust this value to control outline brightness
+        e.object.material = newMaterial;
+      }
+      //e.object.material = new THREE.MeshStandardMaterial({ borderColor: "cyan", borderWidth: 0.1 }); // Change color
+    }
+
+    if (e.object.name === "Object_96") {
+      e.stopPropagation();
+      if (!originalMaterialObject90) {
+        setOriginalMaterialObject90(e.object.material);
+        // Create a clone of the original material and add emission
+        const newMaterial = e.object.material.clone();
+        newMaterial.emissive = new THREE.Color('white');
+        newMaterial.emissiveIntensity = 1; // Adjust this value to control outline brightness
+        e.object.material = newMaterial;
+      }
+      //e.object.material = new THREE.MeshStandardMaterial({ borderColor: "cyan", borderWidth: 0.1 }); // Change color
+    }
+
   };
 
   const handlePointerOut = (e) => {
@@ -45,6 +114,17 @@ const Model = ({ url }) => {
       e.object.material = originalMaterial; // Restore original material
       setOriginalMaterial(null);
     }
+
+    if (e.object.name === "Object_22" && originalMaterialObject22) {
+      e.object.material = originalMaterialObject22; // Restore original material
+      setOriginalMaterialObject22(null);
+    }
+
+    if (e.object.name === "Object_96" && originalMaterialObject90) {
+      e.object.material = originalMaterialObject90; // Restore original material
+      setOriginalMaterialObject90(null);
+    }
+
   };
 
   return (
@@ -58,13 +138,13 @@ const Model = ({ url }) => {
         <group position={objectPosition}>
           {/* Circle Background */}
           <mesh position={[0, 0, -0.01]}>
-            <circleGeometry args={[0.12, 32]} /> {/* Circle with radius 0.2 */}
+            <circleGeometry args={[0.1, 32]} /> {/* Circle with radius 0.2 */}
             <meshBasicMaterial color="black" transparent opacity={0.4} />
           </mesh>
 
           {/* Text Inside Circle */}
           <Text
-            fontSize={0.15}
+            fontSize={0.1}
             color="white"
             anchorX="center"
             anchorY="middle"
@@ -73,6 +153,47 @@ const Model = ({ url }) => {
           </Text>
         </group>
       )}
+
+      {objectPositionObject22 && (
+        <group position={objectPositionObject22}>
+          {/* Circle Background */}
+          <mesh position={[0, 0, -0.01]}>
+            <circleGeometry args={[0.1, 32]} /> {/* Circle with radius 0.2 */}
+            <meshBasicMaterial color="black" transparent opacity={0.4} />
+          </mesh>
+
+          {/* Text Inside Circle */}
+          <Text
+            fontSize={0.1}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+          >
+            2
+          </Text>
+        </group>
+      )}
+
+      {objectPositionObject90 && (
+        <group position={objectPositionObject90}>
+          {/* Circle Background */}
+          <mesh position={[0, 0, -0.01]}>
+            <circleGeometry args={[0.1, 32]} /> {/* Circle with radius 0.2 */}
+            <meshBasicMaterial color="black" transparent opacity={0.4} />
+          </mesh>
+
+          {/* Text Inside Circle */}
+          <Text
+            fontSize={0.1}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+          >
+            3
+          </Text>
+        </group>
+      )}
+
     </>
   );
 };
@@ -125,8 +246,7 @@ const ModelViewer = () => {
             enableZoom={false}
             enableRotate={true}
             autoRotate={false}
-            minDistance={6}
-            maxDistance={6}
+
             maxPolarAngle={Math.PI / 3}
             minPolarAngle={Math.PI / 3}
           />
