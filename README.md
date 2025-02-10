@@ -1,4 +1,4 @@
-# See this for Design
+# See this for Design #
 `blueprint.hackmit.org`
 ---
 
