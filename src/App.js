@@ -1,10 +1,16 @@
 import ModelViewer from './components/ModelViewer';
+import './App.css';
+import Apply from './components/Apply/apply';
+import Links from './components/links/links';
 
 function App() {
   return (
     <>
       <ModelViewer />
-      {/*<p style={{ position: "absolute", bottom: 0, left: 0, marginLeft: "20px", fonFamily: "Poppins, sans- serif", FontSize: "18px" }}>Made with ❤️ by Aditya Saroha</p >*/}
+      <div className='logo'>Technotsav Logo</div>
+      {<p className='pw' style={{ position: "absolute", bottom: 0, left: 0, marginLeft: "20px" }}>Made with ❤️ by Technotsav Web Team</p >}
+      <Apply />
+      <Links facebook={"https://www.github.com/Aditya-138-12"} />
     </>
 
   );

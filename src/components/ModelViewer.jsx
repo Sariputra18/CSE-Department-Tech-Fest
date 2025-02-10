@@ -1,16 +1,30 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, useCursor } from '@react-three/drei';
+import { OrbitControls, useGLTF, useCursor, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 const Model = ({ url }) => {
   const { scene } = useGLTF(url);
   const [originalMaterial, setOriginalMaterial] = useState(null);
+  const [objectPosition, setObjectPosition] = useState(null);
 
   useEffect(() => {
     if (scene) {
       scene.position.set(0, 0, 0);
       scene.scale.set(1, 1, 1);
+
+      const targetObj = scene.getObjectByName('Object_16');
+      if (targetObj) {
+        // Compute bounding box for accurate height palcement
+        const box = new THREE.Box3().setFromObject(targetObj);
+        const center = new THREE.Vector3();
+        const size = new THREE.Vector3();
+        box.getCenter(center);
+        box.getSize(size);
+
+        setObjectPosition(new THREE.Vector3(center.x, box.max.y + 0.2, center.z));
+      }
+
     }
   }, [scene]);
 
@@ -34,11 +48,32 @@ const Model = ({ url }) => {
   };
 
   return (
-    <primitive
-      object={scene}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-    />
+    <>
+      <primitive
+        object={scene}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+      />
+      {objectPosition && (
+        <group position={objectPosition}>
+          {/* Circle Background */}
+          <mesh position={[0, 0, -0.01]}>
+            <circleGeometry args={[0.12, 32]} /> {/* Circle with radius 0.2 */}
+            <meshBasicMaterial color="black" transparent opacity={0.4} />
+          </mesh>
+
+          {/* Text Inside Circle */}
+          <Text
+            fontSize={0.15}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+          >
+            1
+          </Text>
+        </group>
+      )}
+    </>
   );
 };
 
