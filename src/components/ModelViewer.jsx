@@ -1,9 +1,11 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF, useCursor } from '@react-three/drei';
+import * as THREE from 'three';
 
 const Model = ({ url }) => {
   const { scene } = useGLTF(url);
+  const [originalMaterial, setOriginalMaterial] = useState(null);
 
   useEffect(() => {
     if (scene) {
@@ -12,7 +14,32 @@ const Model = ({ url }) => {
     }
   }, [scene]);
 
-  return <primitive object={scene} />;
+  useCursor(!!originalMaterial); // Change cursor when hovering
+
+  const handlePointerOver = (e) => {
+    if (e.object.name === "Object_16") {
+      e.stopPropagation();
+      if (!originalMaterial) {
+        setOriginalMaterial(e.object.material); // Store original material
+      }
+      e.object.material = new THREE.MeshStandardMaterial({ color: "cyan" }); // Change color
+    }
+  };
+
+  const handlePointerOut = (e) => {
+    if (e.object.name === "Object_16" && originalMaterial) {
+      e.object.material = originalMaterial; // Restore original material
+      setOriginalMaterial(null);
+    }
+  };
+
+  return (
+    <primitive
+      object={scene}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+    />
+  );
 };
 
 const LoadingBox = () => (
@@ -32,8 +59,7 @@ const ModelViewer = () => {
   };
 
   return (
-    // Changed height and width to take up most of the viewport
-    <div className="s">
+    <div className="s" style={{ background: 'linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%)' }}>
       {error ? (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-red-500 p-4 text-center">
           <p className="font-bold mb-2">Error loading model</p>
@@ -48,10 +74,9 @@ const ModelViewer = () => {
       ) : (
         <Canvas
           camera={{ position: [2, 2, 5], fov: 60 }}
-          style={{ background: '#f1f5f9', height: '100vh', width: '100vw' }}
+          style={{ height: '100vh', width: '100vw', background: 'transparent' }}
           onError={handleError}
         >
-          {/* Increased light intensity for better visibility */}
           <ambientLight intensity={0.7} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
           <pointLight position={[-10, -10, -10]} intensity={0.5} />
@@ -61,20 +86,17 @@ const ModelViewer = () => {
           </Suspense>
 
           <OrbitControls
-            enablePan={true}
-            enableZoom={true}
+            enablePan={false}
+            enableZoom={false}
             enableRotate={true}
-            autoRotate={true}
-            minDistance={2}
-            maxDistance={5}
+            autoRotate={false}
+            minDistance={6}
+            maxDistance={6}
+            maxPolarAngle={Math.PI / 3}
+            minPolarAngle={Math.PI / 3}
           />
-
-          <gridHelper args={[20, 20]} />
         </Canvas>
       )}
-      <div className="absolute bottom-4 left-4 text-sm text-gray-600 bg-white/80 px-2 py-1 rounded">
-        Model path: {modelPath}
-      </div>
     </div>
   );
 };
