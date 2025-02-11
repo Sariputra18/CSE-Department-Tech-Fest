@@ -1,6 +1,7 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF, useCursor, Text } from '@react-three/drei';
+import { a, useSpring, animated } from '@react-spring/three';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, useGLTF, useCursor, Text, Float, Detailed } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
 
@@ -12,11 +13,6 @@ const Model = ({ url }) => {
   const [objectPosition, setObjectPosition] = useState(null);
   const [objectPositionObject22, setobjectPositionObject22] = useState(null);
   const [objectPositionObject90, setobjectPositionObject90] = useState(null);
-
-  const { camera } = useThree();
-  const controlsRef = useRef();
-  const [isZoomedIn, setIsZoomedIn] = useState(false);
-
 
   useEffect(() => {
     if (scene) {
@@ -198,16 +194,62 @@ const Model = ({ url }) => {
   );
 };
 
-const LoadingBox = () => (
-  <mesh>
-    <boxGeometry args={[1, 1, 1]} />
-    <meshStandardMaterial color="hotpink" wireframe />
-  </mesh>
-);
+const LoadingBox = ({ progress }) => {
+  const radius = 1;
+  const segments = 64;
+
+  return (
+    <group position={[0, 0, 0]}>
+      {/* Background circle */}
+      <mesh>
+        <ringGeometry args={[radius - 0.1, radius, segments]} />
+        <meshBasicMaterial color="#e5e7eb" transparent opacity={0.2} />
+      </mesh>
+
+      {/* Progress circle */}
+      <mesh>
+        <ringGeometry args={[radius - 0.1, radius, segments, 1, 0, (progress / 100) * Math.PI * 2]} />
+        <meshBasicMaterial color="#3b82f6" />
+      </mesh>
+
+      {/* Percentage text */}
+      <Text
+        position={[0, 0, 0.1]}
+        fontSize={0.5}
+        color="#ffffff"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {`${Math.round(progress)}%`}
+      </Text>
+    </group>
+  );
+};
+
 
 const ModelViewer = () => {
   const [error, setError] = useState(null);
   const modelPath = '/models/isometric_bedroom.glb';
+  const [showModel, setShowModel] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let loadingInterval;
+    if (!showModel) {
+      loadingInterval = setInterval(() => {
+        setProgress(prev => {
+          const next = prev + 1;
+          if (next >= 100) {
+            clearInterval(loadingInterval);
+            setShowModel(true);
+            return 100;
+          }
+          return next;
+        });
+      }, 20);
+    }
+    return () => clearInterval(loadingInterval);
+  }, []);
 
   const handleError = (err) => {
     console.error('Error loading model:', err);
@@ -237,9 +279,13 @@ const ModelViewer = () => {
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
           <pointLight position={[-10, -10, -10]} intensity={0.5} />
 
-          <Suspense fallback={<LoadingBox />}>
-            <Model url={modelPath} />
-          </Suspense>
+          {!showModel ? (
+            <LoadingBox progress={progress} />
+          ) : (
+            <Suspense fallback={null}>
+              <Model url={"/models/isometric_bedroom.glb"} />
+            </Suspense>
+          )}
 
           <OrbitControls
             enablePan={false}
