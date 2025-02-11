@@ -1,9 +1,53 @@
 body {
-  height: 10000%;
+  height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
   background-color: #FBAB7E;
   background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
   position: absolute;
+  overflow-X: hidden;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  /* Hides the scrollbar */
+}
+
+
+@font-face {
+  font-family: 'custard';
+  src: url('../public/models/Custard\ W00\ Condensed.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'neulis';
+  src: url('../public/models/BebasNeue.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.pw {
+  font-family: "custard" !important;
+  color: #B62D5D;
+  font-weight: 500;
+  font-size: 2.5rem;
+  line-height: 1.75rem;
+  user-select: none;
+  margin: 20px;
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10%;
+  height: 10%;
+  background-image: url('');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
