@@ -31,13 +31,13 @@ body {
 }
 
 .pw {
-  font-family: "custard" !important;
+  font-family: "neulis" !important;
   color: #B62D5D;
   font-weight: 500;
-  font-size: 2.5rem;
+  font-size: 1.25rem;
   line-height: 1.75rem;
   user-select: none;
-  margin: 20px;
+  margin: 10px;
 }
 
 .logo {
