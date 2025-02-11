@@ -4,6 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useCursor, Text, Float, Detailed } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { useNavigate } from 'react-router-dom';
 
 const Model = ({ url }) => {
   const { scene } = useGLTF(url);
@@ -13,6 +14,8 @@ const Model = ({ url }) => {
   const [objectPosition, setObjectPosition] = useState(null);
   const [objectPositionObject22, setobjectPositionObject22] = useState(null);
   const [objectPositionObject90, setobjectPositionObject90] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (scene) {
@@ -123,12 +126,20 @@ const Model = ({ url }) => {
 
   };
 
+  const handleClick = (e) => {
+    console.log(e.object.name);
+    if (e.object.name === "Object_16") {
+      navigate("/about");
+    }
+  };
+
   return (
     <>
       <primitive
         object={scene}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
+        onClick={(e) => handleClick(e)}
       />
       {objectPosition && (
         <group position={objectPosition}>
@@ -232,6 +243,7 @@ const ModelViewer = () => {
   const modelPath = '/models/isometric_bedroom.glb';
   const [showModel, setShowModel] = useState(false);
   const [progress, setProgress] = useState(0);
+
 
   useEffect(() => {
     let loadingInterval;
