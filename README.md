@@ -1,6 +1,19 @@
-# Getting Started with Create React App
+# Contributors
+<div align="left">
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/Aditya-138-12">
+          <img src="https://avatars.githubusercontent.com/u/143502508?v=4" width="100px;" alt="Contributor 1"/><br />
+          <b>Aditya Saroha</b>
+        </a><br />
+        <sub>Contributor</sub>
+      </td>
+    </tr>
+  </table>
+</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
 ## Available Scripts
 
