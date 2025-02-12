@@ -1,5 +1,5 @@
 # Contributors
-<div style={{height:"100%", width:"2%", backgroundColor:"white"}}></div>
+<div style={{height:"100%", width:"2%", backgroundColor:"white"}}>Contributor 1</div>
 
 # Getting Started with Create React App
 
