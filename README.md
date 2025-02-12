@@ -3,8 +3,8 @@
   <table>
     <tr>
       <td align="center">
-        <a href="https://avatars.githubusercontent.com/u/143502508?v=4">
-          <img src="https://github.com/username1.png" width="100px;" alt="Contributor 1"/><br />
+        <a href="https://github.com/Aditya-138-12">
+          <img src="https://avatars.githubusercontent.com/u/143502508?v=4" width="100px;" alt="Contributor 1"/><br />
           <sub><b>Aditya Saroha</b></sub>
         </a><br />
         <sub>Contributor</sub>
