@@ -3,25 +3,11 @@
   <table>
     <tr>
       <td align="center">
-        <a href="https://github.com/username1">
+        <a href="https://avatars.githubusercontent.com/u/143502508?v=4">
           <img src="https://github.com/username1.png" width="100px;" alt="Contributor 1"/><br />
-          <sub><b>John Doe</b></sub>
+          <sub><b>Aditya Saroha</b></sub>
         </a><br />
-        <sub>Core Developer</sub>
-      </td>
-      <td align="center">
-        <a href="https://github.com/username2">
-          <img src="https://github.com/username2.png" width="100px;" alt="Contributor 2"/><br />
-          <sub><b>Jane Smith</b></sub>
-        </a><br />
-        <sub>UI Designer</sub>
-      </td>
-      <td align="center">
-        <a href="https://github.com/username3">
-          <img src="https://github.com/username3.png" width="100px;" alt="Contributor 3"/><br />
-          <sub><b>Mike Johnson</b></sub>
-        </a><br />
-        <sub>Backend Developer</sub>
+        <sub>Contributor</sub>
       </td>
     </tr>
   </table>
