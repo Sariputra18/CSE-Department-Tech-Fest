@@ -288,7 +288,7 @@ const ModelViewer = () => {
     setError(err.message);
   };
 
-  if(!isWebGLSupported(){
+  if(!isWebGLSupported()){
     return (
       <>
 
