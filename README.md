@@ -1,90 +1,31 @@
 # Contributors
-<html>
-<head>
-  <style>
-    .contributors-section {
-      padding: 20px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-  .contributors-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-  .contributor-card {
-      border: 1px solid #e1e4e8;
-      border-radius: 6px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      transition: transform 0.2s;
-    }
-
-  .contributor-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-  .contributor-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      margin-right: 16px;
-    }
-
-  .contributor-info {
-      flex-grow: 1;
-    }
-
-  .contributor-name {
-      font-weight: 600;
-      font-size: 16px;
-      margin: 0 0 4px 0;
-      color: #24292e;
-    }
-
-  .contributor-role {
-      font-size: 14px;
-      color: #586069;
-      margin: 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="contributors-section">
-    <h2>Contributors</h2>
-    <div class="contributors-grid">
-      <!-- Example Contributor Card -->
-      <div class="contributor-card">
-        <img src="/api/placeholder/60/60" alt="Contributor" class="contributor-avatar">
-        <div class="contributor-info">
-          <h3 class="contributor-name">John Doe</h3>
-          <p class="contributor-role">Lead Developer</p>
-        </div>
-      </div>
-      <div class="contributor-card">
-        <img src="/api/placeholder/60/60" alt="Contributor" class="contributor-avatar">
-        <div class="contributor-info">
-          <h3 class="contributor-name">Jane Smith</h3>
-          <p class="contributor-role">UI Designer</p>
-        </div>
-      </div>
-      <div class="contributor-card">
-        <img src="/api/placeholder/60/60" alt="Contributor" class="contributor-avatar">
-        <div class="contributor-info">
-          <h3 class="contributor-name">Mike Johnson</h3>
-          <p class="contributor-role">Backend Developer</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
-
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/username1">
+          <img src="https://github.com/username1.png" width="100px;" alt="Contributor 1"/><br />
+          <sub><b>John Doe</b></sub>
+        </a><br />
+        <sub>Core Developer</sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/username2">
+          <img src="https://github.com/username2.png" width="100px;" alt="Contributor 2"/><br />
+          <sub><b>Jane Smith</b></sub>
+        </a><br />
+        <sub>UI Designer</sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/username3">
+          <img src="https://github.com/username3.png" width="100px;" alt="Contributor 3"/><br />
+          <sub><b>Mike Johnson</b></sub>
+        </a><br />
+        <sub>Backend Developer</sub>
+      </td>
+    </tr>
+  </table>
+</div>
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
