@@ -8,14 +8,14 @@
       margin: 0 auto;
     }
 
-    .contributors-grid {
+  .contributors-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 20px;
       margin-top: 20px;
     }
 
-    .contributor-card {
+  .contributor-card {
       border: 1px solid #e1e4e8;
       border-radius: 6px;
       padding: 16px;
@@ -24,30 +24,30 @@
       transition: transform 0.2s;
     }
 
-    .contributor-card:hover {
+  .contributor-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    .contributor-avatar {
+  .contributor-avatar {
       width: 60px;
       height: 60px;
       border-radius: 50%;
       margin-right: 16px;
     }
 
-    .contributor-info {
+  .contributor-info {
       flex-grow: 1;
     }
 
-    .contributor-name {
+  .contributor-name {
       font-weight: 600;
       font-size: 16px;
       margin: 0 0 4px 0;
       color: #24292e;
     }
 
-    .contributor-role {
+  .contributor-role {
       font-size: 14px;
       color: #586069;
       margin: 0;
@@ -66,8 +66,6 @@
           <p class="contributor-role">Lead Developer</p>
         </div>
       </div>
-
-      <!-- Example Contributor Card -->
       <div class="contributor-card">
         <img src="/api/placeholder/60/60" alt="Contributor" class="contributor-avatar">
         <div class="contributor-info">
@@ -75,8 +73,6 @@
           <p class="contributor-role">UI Designer</p>
         </div>
       </div>
-
-      <!-- Example Contributor Card -->
       <div class="contributor-card">
         <img src="/api/placeholder/60/60" alt="Contributor" class="contributor-avatar">
         <div class="contributor-info">
