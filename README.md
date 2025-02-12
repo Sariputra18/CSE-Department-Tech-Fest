@@ -1,5 +1,5 @@
 # Contributors
-<div align="center">
+<div align="left">
   <table>
     <tr>
       <td align="center">
