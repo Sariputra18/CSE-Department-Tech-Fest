@@ -129,6 +129,7 @@ const Model = ({ url }) => {
   const handleClick = (e) => {
     console.log(e.object.name);
     if (e.object.name === "Object_16") {
+      // Issue, when clicking on the "About" button, the scene is not updated, the object material should be updated.
       navigate("/about");
     }
   };
