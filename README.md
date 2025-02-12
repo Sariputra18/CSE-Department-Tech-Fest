@@ -1,3 +1,6 @@
+# Contributors
+<div style={{height:"100%", width:"2%", backgroundColor:"white"}}></div>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
