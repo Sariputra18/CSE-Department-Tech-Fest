@@ -12,34 +12,46 @@ jobs:
   update-readme:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Check and Update Contributors
+      - uses: actions/checkout@v3
+      
+      - name: Update Contributors
         run: |
-          # Get PR author
-          AUTHOR="${{ github.event.pull_request.user.login }}"
-          echo "Checking for contributor: $AUTHOR"
+          # Get PR author username
+          USERNAME="${{ github.event.pull_request.user.login }}"
+          AVATAR="https://avatars.githubusercontent.com/$USERNAME?v=4"
           
-          # Check if contributor exists in README.md
-          if ! grep -q "$AUTHOR" README.md; then
-            echo "Contributor not found, adding them..."
+          # Create new contributor HTML
+          CONTRIBUTOR="<td align=\"center\"><a href=\"https://github.com/$USERNAME\"><img src=\"$AVATAR\" width=\"100px;\" alt=\"Contributor\"/><br /><b>$USERNAME</b></a><br /><sub>Contributor</sub></td>"
+          
+          # Create a temporary file for the new content
+          touch temp.md
+          
+          # Process the README file line by line
+          while IFS= read -r line; do
+            # Write the current line
+            echo "$line" >> temp.md
             
-            # Create new contributor div
-            NEW_ENTRY="    <td align=\"center\">\n      <a href=\"https://github.com/$AUTHOR\">\n        <img src=\"https://avatars.githubusercontent.com/$AUTHOR?v=4\" width=\"100px;\" alt=\"Contributor\"/><br />\n        <b>$AUTHOR</b>\n      </a><br />\n      <sub>Contributor</sub>\n    </td>"
-            
-            # Add new contributor before the closing </tr> tag
-            sed -i "s|</tr>|$NEW_ENTRY\n  </tr>|" README.md
+            # If this is the contributors table and we haven't added the new contributor yet
+            if [[ "$line" == *"<tr>"* ]] && ! grep -q "$USERNAME" README.md; then
+              echo "$CONTRIBUTOR" >> temp.md
+            fi
+          done < README.md
+          
+          # Replace the original file
+          mv temp.md README.md
+          
+          # Check if any changes were made
+          if git diff --quiet README.md; then
+            echo "No changes needed to README.md"
+          else
+            # Configure git
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
             
             # Commit and push changes
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
             git add README.md
-            git commit -m "docs: Add new contributor @$AUTHOR"
+            git commit -m "docs: Add contributor @$USERNAME"
             git push
-            
-            echo "Successfully added contributor"
-          else
-            echo "Contributor already exists in README.md"
           fi
