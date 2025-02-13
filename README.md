@@ -10,6 +10,13 @@
         <sub>Contributor</sub>
       </td>
       <td align="center">
+        <a href="https://github.com/truerexdy">
+          <img src="https://avatars.githubusercontent.com/u/134577077?v=4" width="100px;" alt="Contributor 1"/><br />
+          <b>Gunesh Reddy</b>
+        </a><br />
+        <sub>Contributor</sub>
+      </td>
+      <td align="center">
         <a href="https://github.com/Aditya-138-12">
           <img src="https://avatars.githubusercontent.com/u/143502508?v=4" width="100px;" alt="Contributor 1"/><br />
           <b>Aditya Saroha</b>
