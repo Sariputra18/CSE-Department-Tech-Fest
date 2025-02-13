@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { useNavigate } from 'react-router-dom';
 
-
+// Checks whether the browser supports webgl or not?
 const isWebGLSupported = () => {
   try{
     const canvas = document.createElement("canvas");
