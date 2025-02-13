@@ -16,13 +16,6 @@
         </a><br />
         <sub>Contributor</sub>
       </td>
-      <td align="center">
-        <a href="https://github.com/Aditya-138-12">
-          <img src="https://avatars.githubusercontent.com/u/143502508?v=4" width="100px;" alt="Contributor 1"/><br />
-          <b>Aditya-138-12</b>
-        </a><br />
-        <sub>Contributor</sub>
-      </td>
     </tr>
   </table>
 </div>
