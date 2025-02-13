@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { useNavigate } from 'react-router-dom';
 
+webgp_issue
 const isWebGLSupported = () => {
   try{
     const canvas = document.createElement("canvas");
@@ -25,6 +26,8 @@ const isWebGLSupported = () => {
   }catch(e){return false;}
 }
 
+=======
+ main
 const Model = ({ url }) => {
   const { scene } = useGLTF(url);
   const [originalMaterial, setOriginalMaterial] = useState(null);
@@ -151,6 +154,8 @@ const Model = ({ url }) => {
     if (e.object.name === "Object_16") {
       // Issue, when clicking on the "About" button, the scene is not updated, the object material should be updated.
       navigate("/about");
+    } else if (e.object.name === "Object_22") {
+      navigate("/schedule");
     }
 
   };
@@ -289,16 +294,6 @@ const ModelViewer = () => {
     console.error('Error loading model:', err);
     setError(err.message);
   };
-
-  if(!isWebGLSupported()){
-    return (
-      <>
-
-          <p>In your browser WebGL is not supported.</p>
-        
-      </>
-           );
-  }
 
   return (
     <div className="s" style={{ background: 'linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%)' }}>
