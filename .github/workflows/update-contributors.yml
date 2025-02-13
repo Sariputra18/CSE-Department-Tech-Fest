@@ -5,15 +5,19 @@ on:
     types:
       - closed
 
+permissions:
+  contents: write
+
 jobs:
   update-readme:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+        with:
+          fetch-depth: 0
+          
       - name: Get contributor details
         id: contributor
         run: |
@@ -21,26 +25,27 @@ jobs:
           AVATAR_URL="https://avatars.githubusercontent.com/${AUTHOR}?v=4"
           echo "AUTHOR=${AUTHOR}" >> $GITHUB_ENV
           echo "AVATAR_URL=${AVATAR_URL}" >> $GITHUB_ENV
-
-      - name: Check if contributor is already in README
+          
+      - name: Check if contributor is already in README (case-insensitive)
         id: check
         run: |
-          if grep -q "${AUTHOR}" README.md; then
+          if grep -qi "${AUTHOR}" README.md; then
             echo "EXISTS=true" >> $GITHUB_ENV
           else
             echo "EXISTS=false" >> $GITHUB_ENV
           fi
-
+          
       - name: Update README.md
         if: env.EXISTS == 'false'
         run: |
-          sed -i "/<\/tr>/i \ \ \ \ <td align=\"center\">\n\ \ \ \ \ \ <a href=\"https://github.com/${AUTHOR}\">\n\ \ \ \ \ \ \ \ <img src=\"${AVATAR_URL}\" width=\"100px;\" alt=\"Contributor ${AUTHOR}\"/>\n\ \ \ \ \ \ \ \ <br /><b>${AUTHOR}</b>\n\ \ \ \ \ \ </a><br />\n\ \ \ \ \ \ <sub>Contributor</sub>\n\ \ \ \ </td>" README.md
-
+          # Ensure we're adding to the right table
+          sed -i "/<\/tr>/i \ \ \ \ <td align=\"center\">\n\ \ \ \ \ \ <a href=\"https://github.com/${AUTHOR}\">\n\ \ \ \ \ \ \ \ <img src=\"${AVATAR_URL}\" width=\"100px;\" alt=\"Contributor\"/><br />\n\ \ \ \ \ \ \ \ <b>${AUTHOR}</b>\n\ \ \ \ \ \ </a><br />\n\ \ \ \ \ \ <sub>Contributor</sub>\n\ \ \ \ </td>" README.md
+          
       - name: Commit and push changes
         if: env.EXISTS == 'false'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "chore: Add new contributor @${AUTHOR} to README"
+          git commit -m "docs: Add new contributor @${AUTHOR} to README"
           git push
