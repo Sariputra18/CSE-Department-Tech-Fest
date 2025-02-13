@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 const isWebGLSupported = () => {
   try{
     const canvas = document.createElement("canvas");
+    canvas.height = 0;
+    canvas.width = 0;
     if(!window.WebGLRenderingContext){
       return false;
     }
