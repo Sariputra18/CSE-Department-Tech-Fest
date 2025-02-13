@@ -5,7 +5,7 @@
       <td align="center">
         <a href="https://github.com/truerexdy">
           <img src="https://avatars.githubusercontent.com/u/134577077?v=4" width="100px;" alt="Contributor 1"/><br />
-          <b>Gunesh Reddy</b>
+          <b>Rexdy</b>
         </a><br />
         <sub>Contributor</sub>
       </td>
