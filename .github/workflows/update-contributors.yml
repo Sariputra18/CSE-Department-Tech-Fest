@@ -13,6 +13,12 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      - name: Debug Event
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "PR merged: ${{ github.event.pull_request.merged }}"
+          echo "PR author: ${{ github.event.pull_request.user.login }}"
+
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -21,31 +27,46 @@ jobs:
       - name: Get contributor details
         id: contributor
         run: |
-          AUTHOR=$(jq -r '.pull_request.user.login' $GITHUB_EVENT_PATH)
+          echo "Debug: Starting contributor details step"
+          AUTHOR="${{ github.event.pull_request.user.login }}"
           AVATAR_URL="https://avatars.githubusercontent.com/${AUTHOR}?v=4"
+          echo "Author detected as: $AUTHOR"
           echo "AUTHOR=${AUTHOR}" >> $GITHUB_ENV
           echo "AVATAR_URL=${AVATAR_URL}" >> $GITHUB_ENV
           
-      - name: Check if contributor is already in README (case-insensitive)
+      - name: Check README content
+        run: |
+          echo "Current README content:"
+          cat README.md
+          
+      - name: Check if contributor exists
         id: check
         run: |
-          if grep -qi "${AUTHOR}" README.md; then
+          echo "Checking for contributor: ${{ env.AUTHOR }}"
+          if grep -qi "${{ env.AUTHOR }}" README.md; then
+            echo "Contributor already exists in README"
             echo "EXISTS=true" >> $GITHUB_ENV
           else
+            echo "Contributor not found in README"
             echo "EXISTS=false" >> $GITHUB_ENV
           fi
           
       - name: Update README.md
         if: env.EXISTS == 'false'
         run: |
-          # Ensure we're adding to the right table
-          sed -i "/<\/tr>/i \ \ \ \ <td align=\"center\">\n\ \ \ \ \ \ <a href=\"https://github.com/${AUTHOR}\">\n\ \ \ \ \ \ \ \ <img src=\"${AVATAR_URL}\" width=\"100px;\" alt=\"Contributor\"/><br />\n\ \ \ \ \ \ \ \ <b>${AUTHOR}</b>\n\ \ \ \ \ \ </a><br />\n\ \ \ \ \ \ <sub>Contributor</sub>\n\ \ \ \ </td>" README.md
+          echo "Attempting to update README with new contributor"
+          NEW_ENTRY="    <td align=\"center\">\n      <a href=\"https://github.com/${{ env.AUTHOR }}\">\n        <img src=\"${{ env.AVATAR_URL }}\" width=\"100px;\" alt=\"Contributor\"/><br />\n        <b>${{ env.AUTHOR }}</b>\n      </a><br />\n      <sub>Contributor</sub>\n    </td>"
+          awk -v entry="$NEW_ENTRY" '/<\/tr>/{print entry}1' README.md > README.tmp && mv README.tmp README.md
+          echo "README updated. New content:"
+          cat README.md
           
       - name: Commit and push changes
         if: env.EXISTS == 'false'
         run: |
+          echo "Attempting to commit and push changes"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "docs: Add new contributor @${AUTHOR} to README"
+          git status
+          git commit -m "docs: Add new contributor @${{ env.AUTHOR }} to README"
           git push
