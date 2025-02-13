@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { useNavigate } from 'react-router-dom';
 
-webgp_issue
+
 const isWebGLSupported = () => {
   try{
     const canvas = document.createElement("canvas");
@@ -26,8 +26,7 @@ const isWebGLSupported = () => {
   }catch(e){return false;}
 }
 
-=======
- main
+
 const Model = ({ url }) => {
   const { scene } = useGLTF(url);
   const [originalMaterial, setOriginalMaterial] = useState(null);
