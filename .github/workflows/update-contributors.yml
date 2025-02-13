@@ -10,42 +10,36 @@ permissions:
 
 jobs:
   update-readme:
-    runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
     steps:
-      - name: Debug Info
-        run: |
-          echo "Event type: ${{ github.event_name }}"
-          echo "PR merged: ${{ github.event.pull_request.merged }}"
-          echo "PR author: ${{ github.event.pull_request.user.login }}"
-          echo "PR number: ${{ github.event.pull_request.number }}"
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Update README
+      - name: Check and Update Contributors
         run: |
-          # Print current content
-          echo "Current README content:"
-          cat README.md
-          
           # Get PR author
           AUTHOR="${{ github.event.pull_request.user.login }}"
-          echo "Adding contributor: $AUTHOR"
+          echo "Checking for contributor: $AUTHOR"
           
-          # Create new entry
-          NEW_ENTRY="    <td align=\"center\">\\n      <a href=\"https://github.com/$AUTHOR\">\\n        <img src=\"https://avatars.githubusercontent.com/$AUTHOR?v=4\" width=\"100px;\" alt=\"Contributor\"/>\\n        <br />\\n        <b>$AUTHOR</b>\\n      </a>\\n      <br />\\n      <sub>Contributor</sub>\\n    </td>"
-          
-          # Add entry before the first </tr>
-          sed -i "s|</tr>|$NEW_ENTRY\\n  </tr>|" README.md
-          
-          echo "Updated README content:"
-          cat README.md
-
-      - name: Commit changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "docs: Add contributor ${{ github.event.pull_request.user.login }}"
-          git push
+          # Check if contributor exists in README.md
+          if ! grep -q "$AUTHOR" README.md; then
+            echo "Contributor not found, adding them..."
+            
+            # Create new contributor div
+            NEW_ENTRY="    <td align=\"center\">\n      <a href=\"https://github.com/$AUTHOR\">\n        <img src=\"https://avatars.githubusercontent.com/$AUTHOR?v=4\" width=\"100px;\" alt=\"Contributor\"/><br />\n        <b>$AUTHOR</b>\n      </a><br />\n      <sub>Contributor</sub>\n    </td>"
+            
+            # Add new contributor before the closing </tr> tag
+            sed -i "s|</tr>|$NEW_ENTRY\n  </tr>|" README.md
+            
+            # Commit and push changes
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "docs: Add new contributor @$AUTHOR"
+            git push
+            
+            echo "Successfully added contributor"
+          else
+            echo "Contributor already exists in README.md"
+          fi
