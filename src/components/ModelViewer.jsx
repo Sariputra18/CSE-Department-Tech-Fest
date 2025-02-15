@@ -266,7 +266,7 @@ const LoadingBox = ({ progress }) => {
 
 const ModelViewer = () => {
   const [error, setError] = useState(null);
-  const modelPath = '/models/isometric_bedroom.glb';
+  const modelPath = '/models/model.glb';
   const [showModel, setShowModel] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -314,8 +314,7 @@ const ModelViewer = () => {
           onError={handleError}
         >
           <ambientLight intensity={0.7} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} />
+          <hemisphereLight skyColor="white" groundColor="gray" intensity={0.6} />
 
           {!showModel ? (
             <LoadingBox progress={progress} />
